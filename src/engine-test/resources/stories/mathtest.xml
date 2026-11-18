@@ -21,6 +21,7 @@
                 CALC: <math-calc>2 + 3 * 4</math-calc><br />
                 SUM: <math-calc>0.1 + 0.2</math-calc><br />
                 SIN: <math-calc>sin(30°)</math-calc><br />
+                SINDEG: <math-calc>sin(30deg)</math-calc><br />
                 GOLD: <math-calc>player.gold * 1.5</math-calc><br />
                 BRACES: <math-calc>{player.gold} + 1</math-calc><br />
                 SQRT: <math-sqrt x="2" digits="3" /><br />

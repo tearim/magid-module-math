@@ -30,6 +30,12 @@ class TagsTest {
     }
 
     @Test
+    @DisplayName("<math-calc>sin(30deg)</math-calc> prints 0.5")
+    void calcDeg() {
+        assertEquals("0.5", story.renderWithText(new CalcTag(), "math-calc", "sin(30deg)"));
+    }
+
+    @Test
     @DisplayName("With a receiver, <math-calc> stores the full value and prints nothing")
     void calcStores() {
         String printed = story.renderWithText(new CalcTag(), "math-calc", "0.1 + 0.2", "receiver", "$x");

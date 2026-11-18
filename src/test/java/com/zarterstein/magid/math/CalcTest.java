@@ -75,6 +75,36 @@ class CalcTest {
     }
 
     @Test
+    @DisplayName("deg is the same as °: sin(30deg) is exactly 0.5")
+    void sinDeg() {
+        assertEquals(0.5, calc("sin(30deg)"));
+    }
+
+    @Test
+    @DisplayName("deg may stand after a space: cos(60 deg) is exactly 0.5")
+    void degAfterSpace() {
+        assertEquals(0.5, calc("cos(60 deg)"));
+    }
+
+    @Test
+    @DisplayName("deg after a parenthesis: tan((40 + 5)deg) is exactly 1")
+    void degAfterParenthesis() {
+        assertEquals(1, calc("tan((40 + 5)deg)"));
+    }
+
+    @Test
+    @DisplayName("180deg alone is π")
+    void degToRadians() {
+        assertEquals(Math.PI, calc("180deg"));
+    }
+
+    @Test
+    @DisplayName("deg is a whole word: degrees(pi) is still the function, 180")
+    void degreesFunctionUntouched() {
+        assertEquals(180, calc("degrees(pi)"));
+    }
+
+    @Test
     @DisplayName("180° alone is π")
     void degreesToRadians() {
         assertEquals(Math.PI, calc("180°"));

@@ -31,7 +31,7 @@ bits on every machine and JVM). Concretely:
   stored value may round it to a float. Reading a stored value (printing it, `{$x}`) is harmless.
 - **Sums don't drift.** Aggregates use Neumaier's compensated summation: `sum(1e100, 1, -1e100)` is `1`, and ten
   times `0.1` is `1`.
-- **Degrees are exact where a story expects it.** `sin(30°)` is `0.5`, `cos(90°)` is `0`, `tan(45°)` is `1`,
+- **Degrees are exact where a story expects it.** `sin(30deg)` (or `sin(30°)`) is `0.5`, `cos(90°)` is `0`, `tan(45°)` is `1`,
   `asind(0.5)` is `30` (converting to radians first gives `0.49999999999999994`).
 - **No NaN, no infinity.** A result that isn't a finite number is an error (see *Errors*).
 
@@ -52,7 +52,7 @@ Without a receiver, the result is printed: inline in a `<description>`, narrated
 ```xml
 <math-calc>2 + 3 * 4</math-calc>                            14
 <math-calc receiver="$hyp">sqrt($a^2 + $b^2)</math-calc>    stores, prints nothing
-<math-calc>sin(30°) * $r + floor($x)</math-calc>
+<math-calc>sin(30deg) * $r + floor($x)</math-calc>
 <math-calc>mean($scores) + {player.gold}</math-calc>
 ```
 
@@ -60,7 +60,7 @@ Without a receiver, the result is printed: inline in a `<description>`, narrated
 |---|---|
 | `+ - * / % ^` | `%` is mod (the remainder has the divisor's sign); `^` is right-associative, `-2^2` is `-4` |
 | `× · ÷ −` | accepted for `* * / -` |
-| `30°` | degrees; `sin(30°)`, `cos(…°)`, `tan(…°)` compute exactly in degrees |
+| `30deg`, `30°` | degrees (`deg` for keyboards without the sign; `30 deg` works too); `sin(30deg)`, `cos(…deg)`, `tan(…deg)` compute exactly in degrees |
 | `pi`, `e`, `tau` | constants |
 | `name(a, b, …)` | any function below |
 | `$x`, `#x`, `actor.key`, `actor::key` | the story's symbols, read as numbers (a list where an aggregate takes it) |

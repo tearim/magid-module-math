@@ -8,7 +8,7 @@ import com.zarterstein.magid.api.tags.SemanticType;
  * <pre>{@code
  * <math-calc>2 + 3 * 4</math-calc>                                  prints 14
  * <math-calc receiver="$hyp">sqrt($a^2 + $b^2)</math-calc>          stores, prints nothing
- * <math-calc receiver="$s" print="true" digits="2">sin(30°) * $r</math-calc>
+ * <math-calc receiver="$s" print="true" digits="2">sin(30deg) * $r</math-calc>    30deg, or 30°
  * <math-calc>mean($scores) + {player.gold}</math-calc>
  * }</pre>
  * {@code {…}} and {@code $(…)} in the text are expanded by the engine before the formula is read; {@code $x},

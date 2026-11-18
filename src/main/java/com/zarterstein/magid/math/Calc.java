@@ -14,14 +14,15 @@ import java.util.Optional;
  * term       = unary (("*" | "/" | "%") unary)*            % is mod: the remainder has the divisor's sign
  * unary      = ("-" | "+") unary | power
  * power      = postfix ("^" unary)?                          right-associative; -2^2 is -4
- * postfix    = primary "°"*                                  degrees to radians
+ * postfix    = primary ("°" | "deg")*                        degrees to radians: 30° or 30deg (or 30 deg)
  * primary    = number | "(" expression ")" | symbol | name | name "(" list? ")"
  * symbol     = "$"name | "#"name | name"."name | name"::"name     the story's symbols, read as numbers
  * </pre>
  * Also accepted: {@code ×} and {@code ·} for {@code *}, {@code ÷} for {@code /}, {@code −} for {@code -}. Names
  * are the {@linkplain Functions functions}; a name without parentheses is a constant ({@code pi}, {@code e},
  * {@code tau}). {@code sin(30°)}, {@code cos(…°)} and {@code tan(…°)} compute in degrees, exactly where a story
- * expects it ({@link Degrees}). A symbol holding a list ({@code "1, 2, 3"}) spreads into an aggregate:
+ * expects it ({@link Degrees}). {@code deg} is the same as {@code °}, for keyboards without the sign:
+ * {@code sin(30deg)}; it is a whole word, so {@code degrees(pi)} is still the function. A symbol holding a list ({@code "1, 2, 3"}) spreads into an aggregate:
  * {@code mean($scores)}.
  *
  * @author Mark-Marion Gondelman (Orchestration)
@@ -166,7 +167,7 @@ final class Calc {
 
     private Node postfix() {
         Node node = primary();
-        while (take('°')) node = new InDegrees(node);
+        while (take('°') || takeWord("deg")) node = new InDegrees(node);
         return node;
     }
 
@@ -285,6 +286,18 @@ final class Calc {
             return true;
         }
         return false;
+    }
+
+    /** Takes {@code word} if it stands next, as a whole word ({@code deg}, not the start of {@code degrees}). */
+    private boolean takeWord(String word) {
+        skipSpaces();
+        if (!text.startsWith(word, at)) return false;
+        int end = at + word.length();
+        if (end < text.length() && (Character.isLetterOrDigit(text.charAt(end)) || text.charAt(end) == '_')) {
+            return false;
+        }
+        at = end;
+        return true;
     }
 
     private void expect(char c) {

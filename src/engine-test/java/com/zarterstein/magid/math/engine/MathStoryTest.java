@@ -152,6 +152,14 @@ class MathStoryTest {
     }
 
     @Test
+    @DisplayName("sin(30deg) is exactly 0.5, as sin(30°)")
+    void sinDeg() {
+        load("mathtest.xml");
+
+        assertTrue(play("").contains("SINDEG: 0.5\r"), play(""));
+    }
+
+    @Test
     @DisplayName("A formula reads an actor's memory: player.gold * 1.5 is 10.5")
     void readsMemory() {
         load("mathtest.xml");
