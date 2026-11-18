@@ -156,7 +156,7 @@ class MathStoryTest {
     void sinDeg() {
         load("mathtest.xml");
 
-        assertTrue(play("").contains("SINDEG: 0.5\r"), play(""));
+        assertTrue(play("").contains("SINDEG: 0.5\\r"), play(""));   // the payload is JSON: the line break is escaped
     }
 
     @Test
