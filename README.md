@@ -125,7 +125,8 @@ A division by zero, a formula that doesn't parse, `sqrt(-1)`, a result too large
 - `reaction="throw"` (the default): the tag throws (`TagAttributeException` naming the attribute, or
   `TagException`), and the engine reports it with the tag's position.
 - `reaction="silent"`: the tag prints nothing and leaves its receiver alone; the message goes into
-  `$math_last_error`, which the next successful tag clears. A story can show it or test it.
+  `$math_last_error`. Only the story clears it (`<set id="$math_last_error" value=""/>`), since the scene's text
+  renders again after every action; clear it before the tags you want to check, then show it or test it.
 
 A malformed `<math-print-style>` or `<math-errors>` always throws: that is a mistake in the story, not a calculation.
 
@@ -148,6 +149,14 @@ Then `<extend with="magid-math"/>` in a story's `<config>`. To develop against a
 ```bash
 mvn verify
 ```
+
+Two kinds of tests:
+
+- **Unit tests** (`src/test`): against a fake context, `magid-api` only. These run everywhere, CI included.
+- **Story tests** (`src/engine-test`, `MathStoryTest`): the pack installed into a plugin directory and checked as a
+  server checks it, then stories (`src/engine-test/resources/stories`) played by the real engine. The engine
+  (`magid-core`) isn't public, so the Maven profile `engine` turns itself on only where it is in the local Maven
+  repository; force it off with `-P '!engine'`. The story `mathtest.xml` doubles as a demo.
 
 `magid-api` comes from GitHub Packages, which needs a token even for public packages: add a server `github` with
 your GitHub user and a token (scope `read:packages`) to `~/.m2/settings.xml`, or `mvn install` a clone of

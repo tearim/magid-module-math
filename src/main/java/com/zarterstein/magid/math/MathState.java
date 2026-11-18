@@ -19,7 +19,11 @@ final class MathState {
     static final String STYLE = "$math_print_style";
     /** The error reaction, {@value #THROW} or {@value #SILENT}, set by {@code <math-errors/>}. */
     static final String ERRORS = "$math_errors";
-    /** The last error a silent tag swallowed; {@code ""} after a tag that succeeded. */
+    /**
+     * The last error a silent tag swallowed. The pack never clears it: the scene's description renders again after
+     * every action, and its tags would wipe the message before the story could show it. A story clears it itself
+     * ({@code <set id="$math_last_error" value=""/>}) before the tags it wants to check.
+     */
     static final String LAST_ERROR = "$math_last_error";
 
     /** Errors stop the story with an exception (the default). */
@@ -54,15 +58,6 @@ final class MathState {
      */
     static void rememberError(SymbolPinax symbols, String message) {
         symbols.set(LAST_ERROR, message);
-    }
-
-    /**
-     * Clears the last error, if there is one, after a tag that succeeded.
-     *
-     * @param symbols the story's symbols
-     */
-    static void forgetError(SymbolPinax symbols) {
-        if (read(symbols, LAST_ERROR).filter(text -> !text.isEmpty()).isPresent()) symbols.set(LAST_ERROR, "");
     }
 
     private static Optional<String> read(SymbolPinax symbols, String name) {

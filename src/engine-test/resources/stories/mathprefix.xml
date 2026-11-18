@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The pack under a story's own prefix (MathStoryTest): <extend as="m"/>, so its tags read <m-…>. -->
+<game>
+    <config>
+        <story-name>Math under another prefix</story-name>
+        <extend with="magid-math" as="m" />
+    </config>
+    <actors>
+        <actor name="You" id="player" />
+    </actors>
+    <scenes>
+        <scene name="start" initial="true">
+            <description>
+                ROOT: <m-sqrt x="16" /><br />
+                SIND: <m-sind x="150" />
+            </description>
+        </scene>
+    </scenes>
+    <endings>
+        <ending><description>The end.</description></ending>
+        <victory><description>Victory.</description></victory>
+        <death><description>Death.</description></death>
+    </endings>
+</game>

@@ -23,7 +23,7 @@ import java.util.Optional;
  *   <li>{@value #DIGITS}{@code ="2"} prints this result with two decimals, whatever the story's style.</li>
  *   <li>An error throws {@link TagAttributeException} (or {@link TagException} for a formula in the tag's text),
  *       unless the story set {@code <math-errors reaction="silent"/>}: then the tag prints nothing, leaves its
- *       receiver alone, and the message goes into {@value MathState#LAST_ERROR}.</li>
+ *       receiver alone, and the message goes into {@value MathState#LAST_ERROR}, which only the story clears.</li>
  * </ul>
  *
  * @author Mark-Marion Gondelman (Orchestration)
@@ -74,7 +74,6 @@ public abstract class AbstractMathTag extends MagidTag {
             double result = Numbers.requireFinite(compute(), "the result");
             String receiver = receiver();
             if (receiver != null) symbols.set(receiver, Numbers.stored(result));
-            MathState.forgetError(symbols);
             return printing() ? style(symbols).format(result) : "";
         } catch (MathException e) {
             String message = element.name() + ": " + e.getMessage();

@@ -206,14 +206,14 @@ class TagsTest {
     }
 
     @Test
-    @DisplayName("A tag that succeeds clears the last error")
-    void successClearsError() {
+    @DisplayName("A tag that succeeds leaves the last error for the story to read")
+    void successKeepsError() {
         story.render(new ErrorsTag(), "math-errors", "reaction", "silent");
         story.renderWithText(new CalcTag(), "math-calc", "1 / 0");
 
         story.renderWithText(new CalcTag(), "math-calc", "1 / 2");
 
-        assertEquals("", story.symbols.text(MathState.LAST_ERROR));
+        assertEquals("math-calc: division by zero", story.symbols.text(MathState.LAST_ERROR));
     }
 
     @Test

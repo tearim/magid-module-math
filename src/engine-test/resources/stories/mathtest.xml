@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    The story of the engine tests (MathStoryTest): every kind of math tag in a description and in actions.
+    Also a demo: play it on a server with magid-math installed.
+-->
+<game>
+    <config>
+        <story-name>Math test</story-name>
+        <story-description>The magid-math tagpack: formulas, function tags, lists, styles and errors.</story-description>
+        <story-author role="writer">Claude Code</story-author>
+        <extend with="magid-math" />
+    </config>
+    <actors>
+        <actor name="You" id="player">
+            <remember id="gold" what="7" />
+        </actor>
+    </actors>
+    <scenes>
+        <scene name="start" initial="true">
+            <description>
+                CALC: <math-calc>2 + 3 * 4</math-calc><br />
+                SUM: <math-calc>0.1 + 0.2</math-calc><br />
+                SIN: <math-calc>sin(30°)</math-calc><br />
+                GOLD: <math-calc>player.gold * 1.5</math-calc><br />
+                BRACES: <math-calc>{player.gold} + 1</math-calc><br />
+                SQRT: <math-sqrt x="2" digits="3" /><br />
+                MEAN: <math-mean values="1, 2, {player.gold}" />
+            </description>
+            <choice title="keep@Store a sum and double it" action="keep" />
+            <choice title="list@Average a stored list" action="list" />
+            <choice title="bad@Divide by zero" action="bad" />
+            <choice title="quiet@Divide by zero, silently" action="quiet" />
+            <action id="keep">
+                <math-calc receiver="$x">0.1 + 0.2</math-calc>
+                <math-print-style decimal="," />
+                <math-calc>$x * 2</math-calc>
+            </action>
+            <action id="list">
+                <declare var="rolls" value="3, 5, 6" />
+                <math-mean values="$rolls, 2" receiver="$avg" print="true" />
+            </action>
+            <action id="bad"><math-div a="1" b="0" /></action>
+            <action id="quiet">
+                <math-errors reaction="silent" />
+                <math-div a="1" b="0" />
+            </action>
+        </scene>
+    </scenes>
+    <endings>
+        <ending><description>The end.</description></ending>
+        <victory><description>Victory.</description></victory>
+        <death><description>Death.</description></death>
+    </endings>
+</game>

@@ -17,8 +17,8 @@ import java.util.Map;
  * <ul>
  *   <li>{@code throw} (the default): the tag throws, and the engine reports the error.</li>
  *   <li>{@code silent}: the tag prints nothing and leaves its receiver alone; the message goes into the symbol
- *       {@value MathState#LAST_ERROR} (and to the log), and the next tag that succeeds clears it. A story can show
- *       it, or test it in an {@code <if>}.</li>
+ *       {@value MathState#LAST_ERROR} (and to the log). Only the story clears it, so a story can show it, or
+ *       test it in an {@code <if>}, also after the scene has rendered again.</li>
  * </ul>
  * Kept in {@value MathState#ERRORS}, so it is saved with the session. A missing or unknown {@code reaction} always
  * throws {@link TagAttributeException}.

@@ -46,6 +46,8 @@
         <maven.compiler.release>25</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <magid-api.version>0.1-SNAPSHOT</magid-api.version>
+        <!-- The engine the story tests run on (profile "engine") -->
+        <magid.version>1.0-SNAPSHOT</magid.version>
     </properties>
 
     <!-- magid-api is published to GitHub Packages; Maven needs a token to read it, even though it is public. -->
@@ -119,4 +121,56 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Story tests: the pack loaded as a server loads it (plugin directory, PackDiscovery) and stories played
+             by the real engine. The engine (magid-core) isn't public, so the profile turns itself on where it is in
+             the local Maven repository (mvn install in the Magid repository), and the public CI runs the unit tests
+             only. Tests: src/engine-test. -->
+        <profile>
+            <id>engine</id>
+            <activation>
+                <file>
+                    <exists>${user.home}/.m2/repository/com/zarterstein/magid-core</exists>
+                </file>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.zarterstein</groupId>
+                    <artifactId>magid-core</artifactId>
+                    <version>${magid.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>com.zarterstein</groupId>
+                    <artifactId>magid-story-server-plugins</artifactId>
+                    <version>${magid.version}</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>engine-test-sources</id>
+                                <phase>generate-test-sources</phase>
+                                <goals>
+                                    <goal>add-test-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>src/engine-test/java</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
