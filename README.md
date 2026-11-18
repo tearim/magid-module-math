@@ -185,7 +185,8 @@ your GitHub user and a token (scope `read:packages`) to `~/.m2/settings.xml`, or
 
 ## Credits
 
-- **Mark-Marion Gondelman**: Magid, the design of this pack (orchestration).
-- **Claude Code** (Anthropic): agentic implementation.
+- **Mark-Marion Gondelman**: design, requirements, review and release of this pack. He is the author of Magid
+  itself (the language, the engine and its server) and of the core of the extension API this pack builds on.
+- **Claude Code** (Anthropic): implementation (code, tests, documentation, the Math Lab demo), under his direction.
 
 Licensed under the [Apache License 2.0](LICENSE).

@@ -26,13 +26,13 @@
         <developer>
             <name>Mark-Marion Gondelman</name>
             <roles>
-                <role>orchestration</role>
+                <role>design, requirements, review, release</role>
             </roles>
         </developer>
         <developer>
             <name>Claude Code (Anthropic)</name>
             <roles>
-                <role>agentic implementation</role>
+                <role>implementation, under his direction</role>
             </roles>
         </developer>
     </developers>
