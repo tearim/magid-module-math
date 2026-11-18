@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Magid-Plugin-Type: tag-pack
+Magid-Plugin-Id: magid-math
+Magid-Plugin-Version: ${project.version}
+Magid-Requires-Api: [0.1,0.2)
+Magid-Tag-Prefix: math
+
