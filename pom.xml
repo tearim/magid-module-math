@@ -8,7 +8,7 @@
          It compiles against magid-api alone; the server provides the API at run time. -->
     <groupId>com.zarterstein</groupId>
     <artifactId>magid-math</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>magid-math</name>
