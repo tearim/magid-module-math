@@ -217,6 +217,51 @@ class TagsTest {
     }
 
     @Test
+    @DisplayName("<math-last-error/> prints the swallowed error")
+    void lastErrorPrints() {
+        story.render(new ErrorsTag(), "math-errors", "reaction", "silent");
+        story.render(new FunctionTag(), "math-div", "a", "1", "b", "0");
+
+        assertEquals("math-div: division by zero", story.render(new LastErrorTag(), "math-last-error"));
+    }
+
+    @Test
+    @DisplayName("<math-last-error none=\"…\"/> prints its none text when there is no error")
+    void lastErrorNone() {
+        assertEquals("all fine", story.render(new LastErrorTag(), "math-last-error", "none", "all fine"));
+    }
+
+    @Test
+    @DisplayName("<math-last-error/> without an error and without none prints nothing")
+    void lastErrorEmpty() {
+        assertEquals("", story.render(new LastErrorTag(), "math-last-error"));
+    }
+
+    @Test
+    @DisplayName("<math-clear-error/> forgets the error")
+    void clearError() {
+        story.render(new ErrorsTag(), "math-errors", "reaction", "silent");
+        story.render(new FunctionTag(), "math-div", "a", "1", "b", "0");
+
+        story.render(new ClearErrorTag(), "math-clear-error");
+
+        assertEquals("", story.symbols.text(MathState.LAST_ERROR));
+        assertEquals("none", story.render(new LastErrorTag(), "math-last-error", "none", "none"));
+    }
+
+    @Test
+    @DisplayName("In an action, <math-last-error/> narrates the error")
+    void lastErrorNarrates() {
+        story.render(new ErrorsTag(), "math-errors", "reaction", "silent");
+        story.render(new FunctionTag(), "math-sqrt", "x", "-1");
+
+        story.execute(new LastErrorTag(), "math-last-error", "");
+
+        assertEquals(1, story.narrated.size());
+        assertTrue(story.narrated.getFirst().toString().startsWith("math-sqrt: "), story.narrated.toString());
+    }
+
+    @Test
     @DisplayName("reaction=\"throw\" restores throwing")
     void throwAgain() {
         story.render(new ErrorsTag(), "math-errors", "reaction", "silent");

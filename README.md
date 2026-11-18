@@ -118,7 +118,7 @@ An aggregate's `values` is a comma-separated list of formulas: `values="1, $x, s
 By default an integer prints as `3`, never `3.0`, and other values print every digit they have. The style holds for
 the rest of the session and is saved with it.
 
-### `<math-errors reaction="…"/>`: errors
+### Errors: `<math-errors/>`, `<math-last-error/>`, `<math-clear-error/>`
 
 A division by zero, a formula that doesn't parse, `sqrt(-1)`, a result too large for a double:
 
@@ -127,6 +127,19 @@ A division by zero, a formula that doesn't parse, `sqrt(-1)`, a result too large
 - `reaction="silent"`: the tag prints nothing and leaves its receiver alone; the message goes into
   `$math_last_error`. Only the story clears it (`<set id="$math_last_error" value=""/>`), since the scene's text
   renders again after every action; clear it before the tags you want to check, then show it or test it.
+
+Two tags read and reset it:
+
+```xml
+<action id="share">
+    <math-clear-error/>                                  forget an older error
+    <math-div a="{player.gold}" b="$friends" receiver="$share"/>
+    <math-last-error none="Shared fairly."/>             the error, or the none text
+</action>
+```
+
+Where they stand matters: a scene's `<description>` renders again after every action, so check errors in the
+`<action>` (or `<on-entry>`) that runs the calculation.
 
 A malformed `<math-print-style>` or `<math-errors>` always throws: that is a mistake in the story, not a calculation.
 

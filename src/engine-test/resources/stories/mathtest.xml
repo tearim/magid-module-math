@@ -30,6 +30,8 @@
             <choice title="list@Average a stored list" action="list" />
             <choice title="bad@Divide by zero" action="bad" />
             <choice title="quiet@Divide by zero, silently" action="quiet" />
+            <choice title="checked@Divide by zero and tell" action="checked" />
+            <choice title="fine@Divide by two and tell" action="fine" />
             <action id="keep">
                 <math-calc receiver="$x">0.1 + 0.2</math-calc>
                 <math-print-style decimal="," />
@@ -43,6 +45,19 @@
             <action id="quiet">
                 <math-errors reaction="silent" />
                 <math-div a="1" b="0" />
+            </action>
+            <action id="checked">
+                <math-errors reaction="silent" />
+                <math-clear-error />
+                <math-div a="1" b="0" />
+                <math-last-error none="no error" />
+            </action>
+            <action id="fine">
+                <math-errors reaction="silent" />
+                <math-div a="1" b="0" />
+                <math-clear-error />
+                <math-div a="1" b="2" receiver="$half" />
+                <math-last-error none="no error" />
             </action>
         </scene>
     </scenes>

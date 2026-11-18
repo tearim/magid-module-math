@@ -108,13 +108,13 @@ class MathStoryTest {
     // ---- discovery ----
 
     @Test
-    @DisplayName("The engine accepts the pack: 59 tags under the prefix math")
+    @DisplayName("The engine accepts the pack: 61 tags under the prefix math")
     void packIsDiscovered() {
         TagPack pack = TagPackRegistry.getTagPack(PACK_ID);
 
         assertNotNull(pack);
         assertEquals("math", pack.getPrefix());
-        assertEquals(59, pack.getTagDefinitions().size());
+        assertEquals(61, pack.getTagDefinitions().size());
     }
 
     @Test
@@ -224,6 +224,27 @@ class MathStoryTest {
         play("quiet");
 
         assertEquals("math-div: division by zero", symbol("$math_last_error"));
+    }
+
+    @Test
+    @DisplayName("<math-clear-error/>, a failing tag, then <math-last-error/> narrates the error")
+    void lastErrorInAction() {
+        load("mathtest.xml");
+
+        String turn = play("checked");
+
+        assertTrue(turn.contains("math-div: division by zero"), turn);
+    }
+
+    @Test
+    @DisplayName("After <math-clear-error/>, a tag that succeeds leaves <math-last-error none> to print its text")
+    void clearedErrorInAction() {
+        load("mathtest.xml");
+
+        String turn = play("fine");
+
+        assertTrue(turn.contains("no error"), turn);
+        assertEquals("0.5", symbol("$half"));
     }
 
     // ---- under a story's prefix ----
