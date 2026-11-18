@@ -150,12 +150,20 @@ session; don't write them yourself.
 
 ## Installing
 
+Stop the server, then, with the `magid` command, straight from a GitHub release:
+
 ```bash
-magid tagpack install magid-math-0.1.0.jar         # into the server's plugin directory
+magid tagpack install https://github.com/tearim/magid-module-math/releases/download/v0.1.0/magid-math-0.1.0.jar
 ```
 
-Then `<extend with="magid-math"/>` in a story's `<config>`. To develop against a server, point its
-`magid.plugins.dev` at this repository's `target/` (with `magid.dev=true`).
+The pack goes into the server's plugin directory (`magid.plugins`; or `--plugins <dir>`); `--replace` updates an
+installed one. Or copy the jar there yourself. Then `<extend with="magid-math"/>` in a story's `<config>`. To
+develop against a server, point its `magid.plugins.dev` at this repository's `target/` (with `magid.dev=true`).
+
+## Try it: the Math Lab
+
+`demo/mathlab` is a story that tours the pack: experiments, two calculators, styled as an instrument panel, with a
+picture of each experiment's code beside it. How to put it on a server: [demo/README.md](demo/README.md).
 
 ## Building
 

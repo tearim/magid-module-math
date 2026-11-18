@@ -1,0 +1,150 @@
+/* Math Lab: an instrument panel. Deep navy with a millimetre grid, monospace type, cyan readouts, amber warnings. */
+:root {
+    --bench: #0b1220;          /* the background */
+    --panel: #111b2e;          /* cards */
+    --grid: rgba(56, 189, 248, 0.07);
+    --grid-major: rgba(56, 189, 248, 0.14);
+    --cyan: #38bdf8;           /* headings, borders, buttons */
+    --cyan-soft: rgba(56, 189, 248, 0.12);
+    --green: #4ade80;          /* readouts and code */
+    --amber: #fbbf24;          /* warnings */
+    --ink: #dbe7f5;
+    --dim: #8aa0b8;
+}
+
+main, .magid-outer-background {
+    background-color: var(--bench) !important;
+    background-image:
+        linear-gradient(var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px) !important;
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px !important;
+    color: var(--ink);
+}
+
+* {
+    font-family: "JetBrains Mono", "Cascadia Mono", Consolas, "DejaVu Sans Mono", monospace;
+}
+
+/* The scene text: a panel with a cyan rail. */
+.magid-menu-description {
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.7;
+    background-color: var(--panel);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-left: 4px solid var(--cyan);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 12px 0;
+    box-shadow: 0 0 24px rgba(56, 189, 248, 0.12);
+}
+
+h2 {
+    color: var(--cyan);
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    margin: 0 0 12px 0;
+    text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+hr {
+    border: none;
+    border-top: 1px dashed rgba(56, 189, 248, 0.4);
+    margin: 14px 0;
+}
+
+/* Formulas and tag names. */
+code {
+    color: var(--green);
+    background-color: rgba(74, 222, 128, 0.08);
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    border-radius: 4px;
+    padding: 0 5px;
+}
+
+/* Warnings. */
+b, strong {
+    color: var(--amber);
+}
+i, em {
+    color: var(--cyan);
+}
+small {
+    color: var(--dim);
+}
+
+/* Results of an experiment: an oscilloscope readout. */
+.magid-default-narration {
+    color: var(--green);
+    background-color: #07101c;
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    border-radius: 4px;
+    padding: 8px 14px;
+    margin: 6px 0;
+    font-size: 16px;
+    text-shadow: 0 0 6px rgba(74, 222, 128, 0.45);
+}
+
+/* Inputs: instrument fields. */
+input {
+    color: var(--green);
+    background-color: #07101c;
+    border: 1px solid rgba(56, 189, 248, 0.5);
+    border-radius: 4px;
+    padding: 4px 8px;
+}
+
+/* The choices: switches on a panel. */
+.magid-menu-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+}
+.magid-common-button {
+    color: var(--cyan);
+    background-color: var(--cyan-soft);
+    border: 1px solid var(--cyan);
+    border-radius: 4px !important;
+    padding: 9px 16px;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.magid-common-button:hover {
+    color: var(--bench);
+    background-color: var(--cyan);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.7);
+}
+.magid-common-button:active {
+    box-shadow: 0 0 4px rgba(56, 189, 248, 0.7);
+}
+
+/* The code pictures (<img class="lab-code">): the MagidML of each experiment, beside its text where the screen has
+   room for it, and not shown where it hasn't. The web clients give an author's image the classes
+   "magid-image lab-code". */
+.lab-code {
+    display: none;
+}
+@media (min-width: 1100px) {
+    .magid-menu-description {
+        display: flow-root;           /* the panel holds the floating picture */
+    }
+    .lab-code {
+        display: block;
+        float: right;
+        width: min(46%, 560px);
+        height: auto;
+        margin: 2px 0 16px 28px;
+        border-radius: 12px;
+        box-shadow: 0 0 28px rgba(56, 189, 248, 0.18);
+    }
+}
+@media (min-width: 1500px) {
+    .lab-code {
+        width: min(50%, 640px);
+    }
+}

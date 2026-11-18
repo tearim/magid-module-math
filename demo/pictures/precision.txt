@@ -1,0 +1,12 @@
+mathlab.xml · experiment 3
+<!-- compensated sums: no drift -->
+<math-sum values="0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1" />
+<math-sum values="1e100, 1, -1e100" />
+<math-sind x="180" />            <!-- exactly 0 -->
+<math-calc>sin(pi)</math-calc>   <!-- 1.2246467991473532E-16 -->
+
+<action id="store">
+  <math-calc receiver="$x">0.1 + 0.2</math-calc>
+  <show>… <math-calc>$x</math-calc> … <math-calc>$x * 3</math-calc></show>
+  <stay no-entry-action="true" />
+</action>

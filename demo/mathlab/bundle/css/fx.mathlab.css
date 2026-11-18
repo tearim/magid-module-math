@@ -1,0 +1,53 @@
+/* Math Lab for the JavaFX client: an instrument panel. Deep navy, monospace type, cyan and green readouts. */
+.magid-outer-background {
+    -fx-background-color: linear-gradient(to bottom right, #0b1220 0%, #0f1a2e 60%, #0b1220 100%);
+    -fx-control-inner-background: #111b2e;
+}
+.magid-response-pane {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4ade80;
+    -fx-font-family: "Consolas", "DejaVu Sans Mono", monospace;
+}
+.magid-menu {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dbe7f5;
+}
+.magid-menu-textarea.text-area {
+    -fx-text-fill: #dbe7f5;
+    -fx-font-family: "Consolas", "DejaVu Sans Mono", monospace;
+    -fx-font-size: 17;
+    -fx-background-color: transparent;
+    -fx-control-inner-background: #111b2e;
+    -fx-border-color: #38bdf8;
+    -fx-border-width: 0 0 0 4;
+}
+.magid-menu-textarea.text-area .scroll-pane .viewport,
+.magid-menu-textarea.text-area .scroll-pane,
+.magid-menu-textarea.text-area .content {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: #111b2e;
+}
+.magid-common-button {
+    -fx-font-family: "Consolas", "DejaVu Sans Mono", monospace;
+    -fx-font-size: 15;
+    -fx-text-fill: #38bdf8;
+    -fx-background-color: rgba(56, 189, 248, 0.12);
+    -fx-border-color: #38bdf8;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.magid-common-button:hover {
+    -fx-text-fill: #0b1220;
+    -fx-background-color: #38bdf8;
+    -fx-effect: dropshadow(gaussian, rgba(56, 189, 248, 0.7), 14, 0.2, 0, 0);
+}
+.text-field {
+    -fx-text-fill: #4ade80;
+    -fx-control-inner-background: #07101c;
+    -fx-border-color: #38bdf8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}

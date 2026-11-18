@@ -1,0 +1,11 @@
+mathlab.xml · strict calculator
+<on-entry>
+  <math-errors reaction="throw" />  <!-- the default -->
+  <declare var="a" value="1" />
+  <declare var="b" value="0" />
+</on-entry>
+<action id="divide">
+  <!-- b = 0: "math-div: division by zero" stops the story -->
+  <show>{a} ÷ {b} = <math-div a="$a" b="$b" /></show>
+  <stay no-entry-action="true" />
+</action>

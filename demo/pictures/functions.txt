@@ -1,0 +1,15 @@
+mathlab.xml · experiment 2
+<!-- every function is also a tag -->
+<math-hypot a="5" b="12" />
+<math-round x="2.675" decimals="2" />
+<math-log x="1024" base="2" />
+<math-atan2d y="1" x="-1" />
+
+<on-entry>
+  <declare var="samples" value="9.81, 9.79, 9.83, 9.80, 9.82" />
+</on-entry>
+<action id="measure">
+  <show>Mean: <math-mean values="$samples" digits="4" /> m/s²</show>
+  <show>Median: <math-median values="$samples" /> m/s²</show>
+  <stay no-entry-action="true" />
+</action>

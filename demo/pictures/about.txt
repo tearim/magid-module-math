@@ -1,0 +1,12 @@
+mathlab.xml · config
+<config>
+  <story-name>Math Lab</story-name>
+  <!-- one line: 61 tags -->
+  <extend with="magid-math" />
+</config>
+
+<!-- META-INF/MANIFEST.MF of the pack -->
+Magid-Plugin-Type: tag-pack
+Magid-Plugin-Id: magid-math
+Magid-Requires-Api: [0.1,0.2)
+Magid-Tag-Prefix: math

@@ -1,0 +1,14 @@
+mathlab.xml · safe calculator
+<on-entry>
+  <math-errors reaction="silent" />
+  <declare var="formula" value="sqrt(2) * 10" />
+</on-entry>
+<description>
+  <input name="safe-formula" type="text" receiver="$formula" label="Formula" />
+</description>
+<action id="calc">
+  <math-clear-error />
+  <show>{formula} = <math-calc>{formula}</math-calc></show>
+  <math-last-error />            <!-- the error, if any -->
+  <stay no-entry-action="true" />
+</action>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Math Lab: a guided tour of the magid-math tagpack (github.com/tearim/magid-module-math).
+    How to install it on a Magid server: demo/README.md in that repository.
+    The strict calculator stops the story on a bad formula, on purpose: restart the story to go on.
+-->
+<game>
+    <config>
+        <story-name>Math Lab</story-name>
+        <story-description>A guided tour of the magid-math tagpack: formulas, function tags, precision, print styles, and two calculators with your own numbers.</story-description>
+        <story-author role="writer">Claude Code</story-author>
+        <extend with="magid-math" />
+        <link rel="stylesheet" href="magid:///bundle/css/web.mathlab.css" client-type="browser,react" />
+        <link rel="stylesheet" href="magid:///bundle/css/fx.mathlab.css" client-type="javafx" />
+    </config>
+    <actors>
+        <actor name="You" id="player">
+            <remember id="gold" what="7" />
+        </actor>
+    </actors>
+    <scenes>
+
+        <!-- ============================================================ the lab: the main scene -->
+        <scene name="lab" initial="true">
+            <on-entry>
+                <math-print-style />
+                <math-errors reaction="throw" />
+            </on-entry>
+            <description>
+                <h2>MAGID MATH LAB</h2>
+                Instruments calibrated. Every value here is an IEEE 754 double, computed by StrictMath: the same bits on every machine.<br />
+                Constants on the bench: π = <math-pi />, e = <math-e />, τ = <math-tau />.<br />
+                <hr />
+                <b>Warning:</b> some experiments are built to fail. In the <i>strict calculator</i> a bad formula, or a division by zero, stops the story with an error. When that happens, <b>restart the story</b> (reset it) to come back to the lab. The <i>safe calculator</i> reports errors and goes on.
+            </description>
+            <choice title="formulas@Experiment 1: formulas" action="formulas" />
+            <choice title="functions@Experiment 2: function tags and statistics" action="functions" />
+            <choice title="precision@Experiment 3: precision" action="precision" />
+            <choice title="styles@Experiment 4: print styles" action="styles" />
+            <choice title="safe@Safe calculator: your own numbers" action="safe" />
+            <choice title="strict@Strict calculator: may stop the story" action="strict" />
+            <choice title="about@About the lab" action="about" />
+            <action id="formulas"><jump scene="formulas" /></action>
+            <action id="functions"><jump scene="functions" /></action>
+            <action id="precision"><jump scene="precision" /></action>
+            <action id="styles"><jump scene="styles" /></action>
+            <action id="safe"><jump scene="safe" /></action>
+            <action id="strict"><jump scene="strict" /></action>
+            <action id="about"><jump scene="about" /></action>
+        </scene>
+
+        <!-- ============================================================ about the lab -->
+        <scene name="about">
+            <description>
+                <h2>ABOUT THE LAB</h2>
+                <img src="magid:///bundle/img/about.png" class="lab-code" alt="The MagidML of a story that uses the pack" />
+                <b>What it is.</b> The Math Lab is a story that shows <i>magid-math</i>, a tagpack: a plugin that adds tags to MagidML. One line in the story's config, <code>extend with="magid-math"</code>, and 61 tags are there, from <code>math-calc</code> to <code>math-stdevs</code>.<br />
+                <hr />
+                <b>How it works.</b> The server finds the pack in its plugin directory, checks it (its manifest, its API version, every tag class) and gives it a class loader of its own. The story names the pack; the engine resolves <code>math-…</code> to the pack's tags on each lookup. A math tag reads its attributes, computes in doubles with StrictMath, and prints, or stores its result in a symbol that the next tag reads back without losing a bit. Errors stop the story, or, when the story asks for it, wait in <code>$math_last_error</code>.<br />
+                <hr />
+                <b>Why it matters for Magid.</b> A language grows when people can add words to it without asking its makers. Magid's engine knows scenes, choices, actors and narration; tagpacks bring everything else: mathematics today, language models, dice, translations or physics tomorrow. A pack compiles against one small public contract, <code>magid-api</code>, never against the engine; it ships as a single jar; the server checks it before a story may use it. Stories stay readable: the formula sits in the text, where the author meant it.<br />
+                <hr />
+                <b>Made with AI.</b> This pack was designed and built in a single day, in a conversation between Magid's author and Claude Code (Anthropic's coding agent): the author set the goals and made the decisions (double precision, the tags, the error behaviour), the agent wrote the parser, the 61 tags, 143 tests and this story. The tests ran the pack in the real engine, and they caught what reading code would miss: the engine silently rounding stored doubles to floats, an error message wiped before a story could show it. Each was found, fixed and re-tested within minutes. Writing a tagpack for Magid takes an afternoon.
+            </description>
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ experiment 1: formulas -->
+        <scene name="formulas">
+            <description>
+                <h2>EXPERIMENT 1: FORMULAS</h2>
+                <img src="magid:///bundle/img/formulas.png" class="lab-code" alt="The MagidML of experiment 1" />
+                <code>math-calc</code> reads a formula in doubles, from start to end.<br />
+                2 + 3 × 4 = <math-calc>2 + 3 * 4</math-calc><br />
+                −2^2 = <math-calc>-2^2</math-calc> (the power binds tighter than the minus)<br />
+                2^3^2 = <math-calc>2^3^2</math-calc> (powers group from the right)<br />
+                √(3² + 4²) = <math-calc>sqrt(3^2 + 4^2)</math-calc><br />
+                sin(30deg) = <math-calc>sin(30deg)</math-calc> (exact: degrees are reduced before they meet π; 30° works too)<br />
+                −7 % 3 = <math-calc>-7 % 3</math-calc> (mod takes the divisor's sign)<br />
+                Your gold × 1.5 = <math-calc>player.gold * 1.5</math-calc> (a formula reads the story's memories)
+            </description>
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ experiment 2: function tags -->
+        <scene name="functions">
+            <on-entry>
+                <declare var="samples" value="9.81, 9.79, 9.83, 9.80, 9.82" />
+            </on-entry>
+            <description>
+                <h2>EXPERIMENT 2: FUNCTION TAGS</h2>
+                <img src="magid:///bundle/img/functions.png" class="lab-code" alt="The MagidML of experiment 2" />
+                Every function is also a tag of its own, its parameters as attributes.<br />
+                <code>math-hypot a=5 b=12</code> → <math-hypot a="5" b="12" /><br />
+                <code>math-round x=2.675 decimals=2</code> → <math-round x="2.675" decimals="2" /><br />
+                <code>math-log x=1024 base=2</code> → <math-log x="1024" base="2" /><br />
+                <code>math-atan2d y=1 x=-1</code> → <math-atan2d y="1" x="-1" />°<br />
+                <hr />
+                Five measurements of g: {samples}
+            </description>
+            <choice title="measure@Analyse the measurements" action="measure" />
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="measure">
+                <show>Mean: <math-mean values="$samples" digits="4" /> m/s²</show>
+                <show>Median: <math-median values="$samples" /> m/s²</show>
+                <show>Standard deviation (sample): <math-stdevs values="$samples" digits="5" /> m/s²</show>
+                <stay no-entry-action="true" />
+            </action>
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ experiment 3: precision -->
+        <scene name="precision">
+            <description>
+                <h2>EXPERIMENT 3: PRECISION</h2>
+                <img src="magid:///bundle/img/precision.png" class="lab-code" alt="The MagidML of experiment 3" />
+                0.1 + 0.2 = <math-calc>0.1 + 0.2</math-calc> (every digit the double has)<br />
+                Ten times 0.1, summed: <math-sum values="0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1" /> (compensated: no drift)<br />
+                1e100 + 1 − 1e100 = <math-sum values="1e100, 1, -1e100" /><br />
+                sind(180) = <math-sind x="180" />, but sin(π) = <math-calc>sin(pi)</math-calc> (π has no exact double)
+            </description>
+            <choice title="store@Store 0.1 + 0.2, then triple it" action="store" />
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="store">
+                <math-calc receiver="$x">0.1 + 0.2</math-calc>
+                <show>Stored in $x. The pack reads it back as <math-calc>$x</math-calc>, and triples it to <math-calc>$x * 3</math-calc>: not a digit lost between math tags.</show>
+                <show>The engine's own view, {x}, is a float: outside the pack, the precision isn't promised.</show>
+                <stay no-entry-action="true" />
+            </action>
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ experiment 4: print styles -->
+        <scene name="styles">
+            <description>
+                <h2>EXPERIMENT 4: PRINT STYLES</h2>
+                <img src="magid:///bundle/img/styles.png" class="lab-code" alt="The MagidML of experiment 4" />
+                The same three values, printed in the current style:<br />
+                2 ÷ 3 = <math-calc>2 / 3</math-calc><br />
+                1.5 million = <math-calc>1500000</math-calc><br />
+                Planck's constant = <math-calc>6.62607015e-34</math-calc><br />
+                Pick a style; the values above change. Stored values keep every digit.
+            </description>
+            <choice title="two@Two decimals" action="two" />
+            <choice title="comma@Decimal comma" action="comma" />
+            <choice title="sci@Scientific notation" action="sci" />
+            <choice title="reset@Default style" action="reset" />
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="two"><math-print-style digits="2" /><stay no-entry-action="true" /></action>
+            <action id="comma"><math-print-style decimal="," /><stay no-entry-action="true" /></action>
+            <action id="sci"><math-print-style notation="scientific" digits="3" /><stay no-entry-action="true" /></action>
+            <action id="reset"><math-print-style /><stay no-entry-action="true" /></action>
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ the safe calculator: errors are reported -->
+        <scene name="safe">
+            <on-entry>
+                <math-errors reaction="silent" />
+                <declare var="formula" value="sqrt(2) * 10" />
+                <declare var="a" value="1" />
+                <declare var="b" value="0" />
+            </on-entry>
+            <description>
+                <h2>SAFE CALCULATOR</h2>
+                <img src="magid:///bundle/img/safe.png" class="lab-code" alt="The MagidML of the safe calculator" />
+                Errors are reported here, and the lab goes on. Type a formula (e.g. <code>sin(45deg)^2</code>, <code>mean(1, 2, 3)</code>, <code>1 / 0</code>) or two numbers.<br />
+                <input name="safe-formula" type="text" receiver="$formula" label="Formula" value="{formula}" />
+                <input name="safe-a" type="text" receiver="$a" label="a" value="{a}" />
+                <input name="safe-b" type="text" receiver="$b" label="b" value="{b}" />
+                <small>Typed numbers pass through the engine, which keeps about 7 digits of them; results inside the pack are full doubles.</small>
+            </description>
+            <choice title="calc@Compute the formula" action="calc" />
+            <choice title="divide@Divide a by b" action="divide" />
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="calc">
+                <math-clear-error />
+                <show>{formula} = <math-calc>{formula}</math-calc></show>
+                <math-last-error />
+                <stay no-entry-action="true" />
+            </action>
+            <action id="divide">
+                <math-clear-error />
+                <show>{a} ÷ {b} = <math-div a="$a" b="$b" /></show>
+                <math-last-error />
+                <stay no-entry-action="true" />
+            </action>
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+
+        <!-- ============================================================ the strict calculator: errors stop the story -->
+        <scene name="strict">
+            <on-entry>
+                <math-errors reaction="throw" />
+                <declare var="formula" value="sqrt(2) * 10" />
+                <declare var="a" value="1" />
+                <declare var="b" value="0" />
+            </on-entry>
+            <description>
+                <h2>STRICT CALCULATOR</h2>
+                <img src="magid:///bundle/img/strict.png" class="lab-code" alt="The MagidML of the strict calculator" />
+                <b>Warning:</b> here an error stops the story, as a story's bug would. Try <code>1 / 0</code>, or divide by b = 0, to see it; then <b>restart the story</b> to come back.<br />
+                <input name="strict-formula" type="text" receiver="$formula" label="Formula" value="{formula}" />
+                <input name="strict-a" type="text" receiver="$a" label="a" value="{a}" />
+                <input name="strict-b" type="text" receiver="$b" label="b" value="{b}" />
+            </description>
+            <choice title="calc@Compute the formula" action="calc" />
+            <choice title="divide@Divide a by b (stops the story if b is 0)" action="divide" />
+            <choice title="lab@Back to the lab" action="lab" />
+            <action id="calc">
+                <show>{formula} = <math-calc>{formula}</math-calc></show>
+                <stay no-entry-action="true" />
+            </action>
+            <action id="divide">
+                <show>{a} ÷ {b} = <math-div a="$a" b="$b" /></show>
+                <stay no-entry-action="true" />
+            </action>
+            <action id="lab"><jump scene="lab" /></action>
+        </scene>
+    </scenes>
+    <endings>
+        <ending><description>The lab closes.</description></ending>
+        <victory><description>Experiment complete.</description></victory>
+        <death><description>The experiment failed.</description></death>
+    </endings>
+</game>

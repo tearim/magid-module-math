@@ -1,0 +1,9 @@
+mathlab.xml · experiment 1
+<!-- formulas, in doubles, inside the text -->
+2 + 3 × 4 = <math-calc>2 + 3 * 4</math-calc>
+−2^2 = <math-calc>-2^2</math-calc>
+2^3^2 = <math-calc>2^3^2</math-calc>
+√(3² + 4²) = <math-calc>sqrt(3^2 + 4^2)</math-calc>
+sin(30deg) = <math-calc>sin(30deg)</math-calc>
+−7 % 3 = <math-calc>-7 % 3</math-calc>
+gold × 1.5 = <math-calc>player.gold * 1.5</math-calc>

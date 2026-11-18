@@ -1,0 +1,11 @@
+mathlab.xml · experiment 4
+2 ÷ 3 = <math-calc>2 / 3</math-calc>
+Planck's constant = <math-calc>6.62607015e-34</math-calc>
+
+<!-- one tag sets how every math tag prints -->
+<action id="two"><math-print-style digits="2" /> …</action>
+<action id="comma"><math-print-style decimal="," /> …</action>
+<action id="sci">
+  <math-print-style notation="scientific" digits="3" /> …
+</action>
+<action id="reset"><math-print-style /> …</action>
