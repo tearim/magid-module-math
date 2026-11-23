@@ -48,7 +48,7 @@ public class ErrorsTag extends MagidTag {
         String reaction = getAttributeAsString(REACTION).strip().toLowerCase(Locale.ROOT);
         if (!reaction.equals(MathState.THROW) && !reaction.equals(MathState.SILENT)) {
             throw new TagAttributeException(element.name() + ": reaction is " + MathState.THROW + " or "
-                    + MathState.SILENT + ", not '" + reaction + "'", REACTION, element.position(REACTION));
+                    + MathState.SILENT + ", not '" + reaction + "'", element, REACTION);
         }
         tagContext.symbols().set(MathState.ERRORS, reaction);
     }

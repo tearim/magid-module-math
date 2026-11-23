@@ -105,8 +105,8 @@ public abstract class AbstractMathTag extends MagidTag {
 
     private TagException toTagException(String message, String attribute) {
         return attribute == null
-                ? new TagException(message, element.position())
-                : new TagAttributeException(message, attribute, element.position(attribute));
+                ? new TagException(message, element)
+                : new TagAttributeException(message, element, attribute);
     }
 
     // ---- for the subclasses ----

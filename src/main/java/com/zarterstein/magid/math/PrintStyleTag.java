@@ -90,7 +90,7 @@ public class PrintStyleTag extends MagidTag {
     }
 
     private TagAttributeException invalid(String attribute, String message) {
-        return new TagAttributeException(element.name() + ": " + message, attribute, element.position(attribute));
+        return new TagAttributeException(element.name() + ": " + message, element, attribute);
     }
 
     @Override
