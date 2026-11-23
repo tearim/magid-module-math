@@ -9,6 +9,7 @@ import com.zarterstein.magid.api.symbols.SymbolRef;
 import com.zarterstein.magid.api.tags.MagidTag;
 import com.zarterstein.magid.api.tags.Outcome;
 import com.zarterstein.magid.api.tags.SourcePosition;
+import com.zarterstein.magid.api.tags.StoryObjectStash;
 import com.zarterstein.magid.api.tags.TagContext;
 import com.zarterstein.magid.api.tags.TagElement;
 import com.zarterstein.magid.api.tags.TagNode;
@@ -168,6 +169,7 @@ final class Fakes {
     static final class Story {
         final Symbols symbols = new Symbols();
         final List<Object> narrated = new ArrayList<>();
+        final MapStash stash = new MapStash();
         private final TagContext context;
 
         Story() {
@@ -190,6 +192,7 @@ final class Fakes {
                 public Outcome executeBlock(List<TagNode> nodes) { return Outcome.proceed(); }
                 public TagProcessorResultInterface renderBlock(List<TagNode> nodes) { return TagProcessorResult.empty(); }
                 public Logger logger() { return Logger.getLogger("magid-math-test"); }
+                public StoryObjectStash stash() { return stash; }
             };
         }
 
@@ -237,5 +240,17 @@ final class Fakes {
             for (int i = 0; i < attributes.length; i += 2) map.put(attributes[i], attributes[i + 1]);
             return new Element(name, map, text);
         }
+    }
+
+    /** The session's stash: objects in a map, nothing closed. */
+    static final class MapStash implements StoryObjectStash {
+        private final Map<String, Object> objects = new HashMap<>();
+
+        @Override public Object get(String key) { return objects.get(key); }
+        @Override public boolean has(String key) { return objects.containsKey(key); }
+        @Override public void put(String key, Object value) { if (value == null) objects.remove(key); else objects.put(key, value); }
+        @Override public void remove(String key) { objects.remove(key); }
+        @Override public Set<String> keys() { return Set.copyOf(objects.keySet()); }
+        @Override public void clear() { objects.clear(); }
     }
 }
